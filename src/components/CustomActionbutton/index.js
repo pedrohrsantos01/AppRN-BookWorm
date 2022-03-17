@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import PropTypes from "prop-types";
+import colors from "../../assets/colors";
 
 function getPosition(position) {
   switch (position) {
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   container: {
     width: 50,
     height: 50,
-    backgroundColor: "#a5deba",
+    backgroundColor: colors.bgSucess,
     alignItems: "center",
     justifyContent: "center",
   },
