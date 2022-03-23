@@ -44,21 +44,9 @@ export default class WelcomeScreen extends React.Component {
               marginBottom: 10,
             }}
             title="Login in"
-            onPress={() => this.props.navigation.navigate("HomeScreen")}
+            onPress={() => this.props.navigation.navigate("LoginScreen")}
           >
-            <Text style={{ fontWeight: "100", color: "white" }}>Login in</Text>
-          </CustomActionbutton>
-          <CustomActionbutton
-            style={{
-              width: 200,
-              backgroundColor: "transnparent",
-              borderWidth: 2,
-              borderColor: colors.bgError,
-            }}
-            title="Sign up"
-            onPress={() => this.props.navigation.navigate("SignUpScreen")}
-          >
-            <Text style={{ fontWeight: "100", color: "white" }}>Sign up</Text>
+            <Text style={{ fontWeight: "100", color: "white" }}>Login</Text>
           </CustomActionbutton>
         </View>
       </View>
