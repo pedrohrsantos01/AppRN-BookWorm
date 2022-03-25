@@ -11,14 +11,27 @@ import {
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import * as firebase from "firebase/app";
+import { firebaseConfig } from "./config/config";
 
 import { Ionicons } from "@expo/vector-icons";
 import CustomDrawerComponent from "./screens/DrawerNavigator/CustomDrawerComponent";
 import colors from "./src/assets/colors";
 
-const App = () => {
-  return <AppContainer />;
-};
+class App extends React.Component {
+  constructor() {
+    super();
+    this.initializeFirebase();
+  }
+
+  initializeFirebase = () => {
+    firebase.initializeApp(firebaseConfig);
+  };
+
+  render() {
+    return <AppContainer />;
+  }
+}
 
 const AppDrawerNavigator = createDrawerNavigator(
   {
