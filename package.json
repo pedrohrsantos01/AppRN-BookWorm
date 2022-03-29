@@ -9,13 +9,15 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/drawer": "^6.3.1",
-    "@react-navigation/stack": "^6.1.1",
+    "@react-navigation/native": "^5.x",
+    "@react-navigation/stack": "^5.x",
     "expo": "~44.0.2",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
-    "firebase": "^9.6.9",
+    "firebase": "^8.2.10",
     "prop-types": "^15.8.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",

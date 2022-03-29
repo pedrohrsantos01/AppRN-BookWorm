@@ -1,13 +1,13 @@
 import React from "react";
 import { View } from "react-native";
 
-import WelcomeScreen from "./screens/AppSwitchNavigator/WelcomeScreen";
 import {
   createAppContainer,
   createSwitchNavigator,
   createStackNavigator,
   createDrawerNavigator,
 } from "react-navigation";
+import WelcomeScreen from "./screens/AppSwitchNavigator/WelcomeScreen";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SettingsScreen from "./screens/SettingsScreen";
@@ -17,6 +17,7 @@ import { firebaseConfig } from "./config/config";
 import { Ionicons } from "@expo/vector-icons";
 import CustomDrawerComponent from "./screens/DrawerNavigator/CustomDrawerComponent";
 import colors from "./src/assets/colors";
+import BookWorm from "./BookWorm";
 
 class App extends React.Component {
   constructor() {
@@ -25,11 +26,11 @@ class App extends React.Component {
   }
 
   initializeFirebase = () => {
-    firebase.initializeApp(firebaseConfig);
+    firebase.default.initializeApp(firebaseConfig);
   };
 
   render() {
-    return <AppContainer />;
+    return <BookWorm />;
   }
 }
 

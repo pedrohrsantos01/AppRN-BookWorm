@@ -24,7 +24,7 @@ export default class LoginScreen extends React.Component {
   onSignIn = async () => {
     if (this.state.email && this.state.password) {
       try {
-        const response = await firebase
+        const response = await firebase.default
           .auth()
           .signInWithEmailAndPassword(this.state.email, this.state.password);
       } catch (error) {
@@ -43,15 +43,15 @@ export default class LoginScreen extends React.Component {
   onSignUp = async () => {
     if (this.state.email && this.state.password) {
       try {
-        const response = await firebase
+        const response = await firebase.default
           .auth()
           .createUserWithEmailAndPassword(
             this.state.email,
             this.state.password
           );
       } catch (error) {
-        if (error.code == "auth/email-already-in-user") {
-          alert("User already Exists. Try login!");
+        if (error.code == "auth/email-already-in-use") {
+          alert("User already exists, Try loggin in");
         } else {
           alert("Please enter email and password");
         }
