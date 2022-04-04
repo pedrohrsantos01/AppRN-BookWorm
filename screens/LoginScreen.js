@@ -10,6 +10,7 @@ import colors from "../src/assets/colors";
 import CustomActionbutton from "../src/components/CustomActionbutton";
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/database";
 
 export default class LoginScreen extends React.Component {
   constructor() {
@@ -60,7 +61,14 @@ export default class LoginScreen extends React.Component {
         if (response) {
           this.setState({ isLoading: false });
           //signin the user
-          this.onSignIn(this.state.email, this.state.password);
+          const user = await firebase.default
+            .database()
+            .ref("users/")
+            .child(response.user.uid)
+            .set({ email: response.user.email, uid: response.user.uid });
+
+          this.props.navigation.navigate("LoadingScreen");
+          //this.onSignIn(this.state.email, this.state.password);
         }
       } catch (error) {
         this.setState({ isLoading: false });

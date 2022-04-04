@@ -14,12 +14,14 @@ import Counter from "../src/components/Counter";
 import CustomActionbutton from "../src/components/CustomActionbutton";
 
 import { Ionicons } from "@expo/vector-icons";
+import * as firebase from "firebase/app";
 
 import colors from "../src/assets/colors";
 class HomeScreen extends React.Component {
   constructor() {
     super();
     this.state = {
+      currentUser: {},
       totalCount: 0,
       readingCount: 0,
       readCount: 0,
@@ -27,8 +29,23 @@ class HomeScreen extends React.Component {
       isAddNewBookVisible: false,
       textInputData: " ",
       books: [],
+      booksReading: [],
+      booksRead: [],
     };
   }
+
+  componentDidMount = async () => {
+    const { navigation } = this.props;
+    const user = navigation.getParam("user");
+
+    const currentUserData = await firebase.default
+      .database()
+      .ref("users/")
+      .child(user.uid)
+      .once("value");
+
+    this.setState({ currentUser: currentUserData.val() });
+  };
 
   showAddNewBook = () => {
     this.setState({ isAddNewBookVisible: true });
@@ -38,26 +55,62 @@ class HomeScreen extends React.Component {
     this.setState({ isAddNewBookVisible: false });
   };
 
-  addBook = (book) => {
-    this.setState(
-      (state, props) => ({
-        books: [...state.books, book],
-        totalCount: state.totalCount + 1,
-        readingCount: state.readingCount + 1,
-      }),
-      () => {
-        console.log(this.state.books);
+  addBook = async (book) => {
+    try {
+      const snapshot = await firebase.default
+        .database()
+        .ref("books")
+        .child(this.state.currentUser.uid)
+        .orderByChild("name")
+        .equalTo(book)
+        .once("value");
+      if (snapshot.exists()) {
+        alert("Unable to add as book already exists");
+      } else {
+        const key = await firebase.default
+          .database()
+          .ref("books")
+          .child(this.state.currentUser.uid)
+          .push().key;
+
+        const response = await firebase.default
+          .database()
+          .ref("books")
+          .child(this.state.currentUser.uid)
+          .child(key)
+          .set({ name: book, read: false });
+
+        this.setState(
+          (state, props) => ({
+            books: [...state.books, book],
+            booksReading: [...state.booksReading, book],
+            isAddNewBookVisible: false,
+          }),
+          () => {
+            console.log(this.state.books);
+          }
+        );
       }
-    );
+    } catch (error) {
+      console.log(error);
+    }
+    /*
+    
+    */
   };
 
   markAsRead = (selectedBook, index) => {
-    let newList = this.state.books.filter((book) => book !== selectedBook);
+    let books = this.state.books.filter((book) => book !== selectedBook);
+    let booksReading = this.state.booksReading.filter(
+      (book) => book !== selectedBook
+    );
 
     this.setState((prevState) => ({
-      books: newList,
-      readingCount: prevState.readingCount - 1,
-      readCount: prevState.readCount + 1,
+      books: books,
+      booksReading: booksReading,
+      booksRead: [...prevState.booksRead, selectedBook],
+      //readingCount: prevState.readingCount - 1,
+      //readCount: prevState.readCount + 1,
     }));
   };
 
@@ -129,9 +182,9 @@ class HomeScreen extends React.Component {
         </View>
 
         <View style={styles.footer}>
-          <BookCount title="Total" count={this.state.totalCount} />
-          <BookCount title="Reading" count={this.state.readingCount} />
-          <BookCount title="Read" count={this.state.readCount} />
+          <BookCount title="Total Books" count={this.state.books.length} />
+          <BookCount title="Reading" count={this.state.booksReading.length} />
+          <BookCount title="Read" count={this.state.booksRead.length} />
         </View>
         <SafeAreaView />
       </View>
